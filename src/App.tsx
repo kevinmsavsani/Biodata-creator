@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// src/App.tsx
+import React, { useState } from 'react';
+import BiodataForm from './components/BiodataForm';
+import BiodataPreview from './components/BiodataPreview';
+import { Section } from './interfaces';
 
-function App() {
+const App: React.FC = () => {
+  const [backgroundPhoto, setBackgroundPhoto] = useState<string>('');
+  const [userImage, setUserImage] = useState<string>('');
+  const [sections, setSections] = useState<Section[]>([
+    { title: '', subsections: [{ key: '', value: '' }] },
+  ]);
+
+  const handleFormSubmit = (formData: { backgroundPhoto: string; userImage: string; sections: Section[] }) => {
+    setBackgroundPhoto(formData.backgroundPhoto);
+    setUserImage(formData.userImage);
+    setSections(formData.sections);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='flex flex-col gap-4'>
+      <BiodataForm onFormSubmit={handleFormSubmit} />
+      {backgroundPhoto && userImage && <BiodataPreview backgroundPhoto={backgroundPhoto} userImage={userImage} sections={sections} />}
     </div>
   );
-}
+};
 
 export default App;
